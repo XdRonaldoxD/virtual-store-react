@@ -1,0 +1,25 @@
+/* NAVBAR */
+nav {
+  width: 1080px;
+  padding: 15px 20px;
+  background-color: #ff3b3c;
+  display: flex;
+  justify-content: space-between;
+  list-style-type: none;
+  font-size: 14px;
+}
+
+.nav-a {
+  color: white;
+  font-weight: 700;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  width: 150px;
+  padding: 5px 0;
+  font-size: 14px;
+}
+
+.nav-a:hover {
+  text-decoration: underline;
+}
