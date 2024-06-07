@@ -1,7 +1,9 @@
 import styles from "./Footer.module.css";
 export default function Footer() {
+
+    const anio=new Date().getFullYear()
+
     return (
-        <>
             <footer>
                 <div id="footer" className={styles["footer-container"]}>
                     <ul className={styles["footer-ul"]}>
@@ -91,9 +93,8 @@ export default function Footer() {
                     </ul>
                 </div>
                 <div className={styles["footer-copyright"]}>
-                    Curso de HTML + CSS 2023
+                    Curso de HTML + CSS {anio}
                 </div>
             </footer>
-        </>
     )
 }

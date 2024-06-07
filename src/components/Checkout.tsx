@@ -25,7 +25,6 @@ function Checkout({ product }: CheckoutProps) {
 
   // Gestionar los datos del localStorage
   useEffect(() => {
-
     let productsOnCart: Product[] = [];
     const cart = localStorage.getItem("cart");
     if (cart) {
@@ -44,7 +43,7 @@ function Checkout({ product }: CheckoutProps) {
 
     const one  = productsInStorage.find((each) => each.id === product.id);
     if (!one ) {
-      product.units = quantity;
+      product.quantity = quantity;
       productsInStorage.push(product);
       setButton(true);
     } else {
@@ -88,14 +87,14 @@ function Checkout({ product }: CheckoutProps) {
               min="1"
               value={quantity}
               ref={units}
-              onChange={() => setQuantity(Number(units.target.value))}
+              onChange={() => setQuantity(Number(units.current.value))}
             />
             <button
               type="button"
               className={button ? styles["remove-btn"] : styles["cart-btn"]}
               onClick={manageCart}
             >
-              {button ? "Remove from cart" : "Add to cart"}
+              {button ? "Remover del carrito" : "Agregar al carrito"}
             </button>
           </div>
         </div>

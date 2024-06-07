@@ -81,3 +81,16 @@
   .cart-btn:hover {
     background: #ff5151;
   }
+
+  .remove-btn{
+    width: 100%;
+    background: #191313;
+    color: white;
+    font-weight: bold;
+    border: none;
+    height: 40px;
+    border-radius: 10px;
+  }
+  .remove-btn:hover {
+    background: #191313;
+  }

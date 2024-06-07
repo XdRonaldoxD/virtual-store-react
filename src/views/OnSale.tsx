@@ -17,14 +17,14 @@ function Onsale() {
     const productoRango = onSaleProducts.slice(from, to);
     const handlePrevious = () => {
         if (from > 0) {// Comprobamos si hay productos anteriores disponibles para mostrar
-            setFrom(prevFrom => Math.max(prevFrom - 4, 0));// Usamos Math.max para asegurarnos de que 'from' no sea menor que 0
+            setFrom(prevFrom => Math.max(prevFrom - 4, 0));// Usamos Math.max para asegurarnos de que 'from' no sea menor que 0 (Max.max es para compara y selecciones cual es el mayor)
             setTo(prevTo => prevTo - 4) // Reducimos el índice 'to' para retroceder al grupo anterior de productos
         }
     }
     const handleNext = () => {
         if (to < onSaleProducts.length) {
             setFrom(prevFrom => prevFrom + 4);// Incrementamos el índice 'from' para avanzar al siguiente grupo de productos
-            setTo(prevTo => Math.min(prevTo + 4, onSaleProducts.length));// Usamos Math.min para asegurarnos de que 'to' no exceda la longitud total de productos
+            setTo(prevTo => Math.min(prevTo + 4, onSaleProducts.length));// Usamos Math.min para asegurarnos de que 'to' no exceda la longitud total de productos (Math.min es para comparar y seleciconar el menos)
         }
     };
     return (

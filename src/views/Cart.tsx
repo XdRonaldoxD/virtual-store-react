@@ -1,46 +1,69 @@
 
+import { useEffect, useState } from "react";
 import Footer from "../components/Footer";
 import Hero from "../components/Hero";
 import NavBar from "../components/NavBar";
 import styles from "./Cart.module.css";
+interface Product {
+    id: number;
+    title: string;
+    description: string;
+    price: number;
+    stock: number;
+    images: string[];
+    colors: string[];
+    onsale: boolean;
+    quantity: number;
+    units: number;
+}
 export default function Carts() {
+    const [productoGuardado, setProductoGuardado] = useState<Product[]>([]);
+    useEffect(() => {
+        const cart = localStorage.getItem('cart');
+        if (cart) {
+            setProductoGuardado(JSON.parse(cart));
+        }
+    }, [])
+
+    const calcularTotal = (): number => {
+        return productoGuardado.reduce((suma, product) => {
+            return suma + (product.quantity * product.price)
+        }, 0)
+    }
+
     return (
         <>
             <NavBar />
             <Hero first="tecnología" second="renovada" />
-            <main>
-                <article className={styles["product-cart"]}>
-                    <img
-                        className={styles["product-img"]}
-                        src="https://i.postimg.cc/kX8PKZpq/ipad.jpg"
-                        alt="ipad"
-                    />
-                    <div className={styles["product-details"]}>
-                        <strong className={styles["product-title"]}>iPad Pro 13</strong>
-                        <span className={styles["product-description"]}>- Silver</span>
-                        <p className={styles["product-description"]}>
-                            The iPad Pro 13 is a stunning piece of technology, boasting a
-                            large 12.9-inch Retina display with ProMotion technology. With
-                            256GB of storage, this iPad provides ample space for all your
-                            files, apps, and multimedia content. The sleek and slim design,
-                            combined with the silver color, gives it a sophisticated look.
-                            Enjoy seamless connectivity with the WiFi feature. Capture your
-                            memorable moments with the high-quality camera and relive them on
-                            the impressive screen. Whether you're a professional artist,
-                            student, or just someone who appreciates cutting-edge technology,
-                            the iPad Pro 12.9 is a versatile device that meets all your needs.
-                        </p>
-                        <input
-                            className={styles["product-input"]}
-                            type="number"
-                            name="quantity"
-                            defaultValue="1"
-                            min="1"
-                            id="P7Q8R90"
+            {productoGuardado.map((product) => (
+                <main key={product.id}>
+                    <article className={styles["product-cart"]}>
+                        <img
+                            className={styles["product-img"]}
+                            src={product.images[0]}
+                            alt={product.title}
                         />
-                    </div>
-                    <strong className={styles["price"]}>AR$ $800000</strong>
-                </article>
+                        <div className={styles["product-details"]}>
+                            <strong className={styles["product-title"]}>{product.title}</strong>
+                            <span className={styles["product-description"]}>- {product.colors[0]}</span>
+                            <p className={styles["product-description"]}>
+                                {product.description}
+                            </p>
+                            <input
+                                className={styles["product-input"]}
+                                type="number"
+                                name="quantity"
+                                defaultValue={product.quantity}
+                                min="1"
+                                id={product.id.toString()}
+                            />
+                        </div>
+                        <strong className={styles["price"]}>AR$ {(product.quantity * product.price)}</strong>
+                    </article>
+                </main>
+            ))}
+
+            <main>
                 <div className={styles["cart-resume"]}>
                     <div className={styles["cart-data"]}>
                         <h2 className={styles["cart-title"]}>
@@ -50,7 +73,7 @@ export default function Carts() {
                         </h2>
                         <div className={styles["cart-total"]}>
                             <h3>Total</h3>
-                            <strong className={styles["cart-price"]}>$800000</strong>
+                            <strong className={styles["cart-price"]}>${calcularTotal().toLocaleString()}</strong>
                         </div>
                         <small className={styles["cart-tax"]}>
                             Incluye impuesto PAIS y percepción AFIP.
@@ -61,6 +84,7 @@ export default function Carts() {
                     </button>
                 </div>
             </main>
+
             <Footer />
         </>
     )
