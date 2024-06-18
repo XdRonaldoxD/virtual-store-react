@@ -6,6 +6,7 @@ export default interface Products{
     color?:string,
     image?:string,
     quantity?: number;
+    onsale?:number,
     images?: Array<string>;
     colors?: Array<string>;
 }
