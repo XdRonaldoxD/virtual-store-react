@@ -22,6 +22,13 @@ main {
     display: flex;
     justify-content: space-between;
   }
+  .product-title {
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 25px;
+    word-wrap: break-word;
+    display: block;
+  }
   
   /* CART CARD */
   .product-cart {

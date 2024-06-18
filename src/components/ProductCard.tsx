@@ -1,7 +1,8 @@
 import { Link } from "react-router-dom";
 import styles from "./ProductCard.module.css";
-export default function ProductCard(props) {
-    const { id, title, price, color, image } = props;
+import Products from "../interfaces/Product";
+export default function ProductCard({ id, title, price, color, image }:Products) {
+
     return (
             <Link className={styles["product-card"]} to={"/details/" + id}>
                 <img

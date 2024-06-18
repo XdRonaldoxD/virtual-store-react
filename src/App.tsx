@@ -13,9 +13,7 @@ function App() {
     {path:"/NotFound/",element:<NotFound />},
   ])
   return (
-    <>
       <RouterProvider router={browserRouter} />
-    </>
   );
 }
 export default App;

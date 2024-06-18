@@ -1,41 +1,28 @@
 import { useState, useEffect, useRef } from "react";
-import styles from "./Checkout.module.css";
-
-interface Product {
-  id: number;
-  title: string;
-  description: string;
-  price: number;
-  stock: number;
-  images: string[];
-  colors: string[];
-  onsale: boolean;
-  quantity: number;
-  units : number;
-}
-
-interface CheckoutProps {
-  product: Product;
-}
-
-function Checkout({ product }: CheckoutProps) {
+import ProductProp from "../interfaces/Thumbs";
+function Checkout({ product }:ProductProp) {
   const units:any = useRef(1)
-  const [quantity, setQuantity] = useState(1); // inicializa con 1
+  const [quantity, setQuantity] = useState(1);   // inicializa con 1
   const [button, setButton] = useState(false); // inicializa con false
 
   // Gestionar los datos del localStorage
   useEffect(() => {
-    let productsOnCart: Product[] = [];
+    let productsOnCart: any[] = [];
     const cart = localStorage.getItem("cart");
     if (cart) {
       productsOnCart = JSON.parse(cart);
     }
     const isInCart = productsOnCart.some((each) => each.id === product.id);
     setButton(isInCart);
+
+    const carritoLocal=productsOnCart.find((each)=> each.id===product.id)
+    if (carritoLocal) {
+      setQuantity(carritoLocal.quantity)
+    }
   }, [product]);
 
   const manageCart = () => {
-    let productsInStorage: Product[] = [];
+    let productsInStorage: any[] = [];
     const cart = localStorage.getItem("cart");
     if (cart) {
       productsInStorage = JSON.parse(cart);
@@ -54,35 +41,30 @@ function Checkout({ product }: CheckoutProps) {
   };
 
   return (
-    <section className={styles["product-checkout-block"]}>
-      <div className={styles["checkout-container"]}>
-        <span className={styles["checkout-total-label"]}>Total:</span>
-        <h2 id="price" className={styles["checkout-total-price"]}>
+    <section className="w-[340px] p-[10px] m-[10px] flex flex-col">
+      <div className="bg-[#ebebeb] p-10 rounded-md">
+        <span className="text-[#ff3b3c]">Total:</span>
+        <h2 id="price" className="text-[28px] font-bold mt-[10px]">
           $ {(product.price * quantity).toLocaleString()}
         </h2>
-        <p className={styles["checkout-description"]}>
+        <p className="text-wrap leading-5 text-[12px]">
           Includes Country tax and AFIP collection
         </p>
-        <ul className={styles["checkout-policy-list"]}>
-          <li>
-            <span className={styles["policy-icon"]}>
-              <img src="/truck.png" alt="Truck" />
-            </span>
-            <span className={styles["policy-desc"]}></span>
+        <ul className="p-0 list-none mb-[30px]">
+          <li className="flex my-[15px]">
+            <img src="/truck.png" alt="Truck" className="mr-[15px]" />
+            <img src="/plane.png" alt="Plane" className="mr-[15px]" />
           </li>
           <li>
-            <span className={styles["policy-icon"]}>
-              <img src="/plane.png" alt="Plane" />
-            </span>
-            <span className={styles["policy-desc"]}>
+            <span className="text-wrap leading-5 text-[10px]">
               Add the product to the cart to know the shipping costs
             </span>
           </li>
         </ul>
-        <div className={styles["checkout-process"]}>
-          <div className={styles["top"]}>
+        <div /* className="gap-y-[20px]" */>
+          <div className="flex mb-[10px]">
             <input
-              id="input-quantity"
+              className="h-[40px] rounded-md border-0 w-[60px] mr-[10px] p-[5px] pl-[15px] box-border"
               type="number"
               min="1"
               value={quantity}
@@ -91,10 +73,14 @@ function Checkout({ product }: CheckoutProps) {
             />
             <button
               type="button"
-              className={button ? styles["remove-btn"] : styles["cart-btn"]}
+              className={
+                button
+                  ? "w-full bg-[#202020] hover:bg-[#404040] text-[14px] text-white font-bold border-0 h-[40px] rounded-md"
+                  : "w-full bg-[#ff3b3c] hover:bg-[#ff5151] text-[14px] text-white font-bold border-0 h-[40px] rounded-md"
+              }
               onClick={manageCart}
             >
-              {button ? "Remover del carrito" : "Agregar al carrito"}
+              {button ? "Remove from cart" : "Add to cart"}
             </button>
           </div>
         </div>
