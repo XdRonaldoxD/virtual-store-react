@@ -1,8 +1,9 @@
 import { Link } from "react-router-dom";
 import styles from "./ProductCard.module.css";
 import Products from "../interfaces/Product";
+import { useSelector } from "react-redux";
 export default function ProductCard({ id, title, price, color, image }:Products) {
-
+    const store=useSelector((store:any)=>store.products.text);
     return (
             <Link className={styles["product-card"]} to={"/details/" + id}>
                 <img
