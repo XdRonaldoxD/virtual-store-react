@@ -1,10 +1,13 @@
 import { useRef, useState } from "react";
 import ProductProp from "../interfaces/Thumbs";
+import { useDispatch } from "react-redux";
+import { calcularTotal } from "../store/actions/products";
 
 export default function CartCard({ product }: ProductProp) {
     const { id, images, title, colors, description, quantity, price } = product
     const units: any = useRef();
     const [cantidad, setQuantity] = useState(quantity ?? 0);
+    const dispatch = useDispatch();
     const manageUnits = () => {
         const productsOnlocal = localStorage.getItem('cart');
         const cantidadCambiar = Number(units.current.value);;
@@ -14,6 +17,8 @@ export default function CartCard({ product }: ProductProp) {
             one.quantity = cantidadCambiar;
             localStorage.setItem('cart', JSON.stringify(productsOnCart));
             setQuantity(cantidadCambiar);
+            dispatch(calcularTotal({products:productsOnCart})) //ACTUALIZA EL CAR PARA QUE REDUX DEL TOTAL DE PRODUCTO CAMBIEN
+
         }
     }
     return (

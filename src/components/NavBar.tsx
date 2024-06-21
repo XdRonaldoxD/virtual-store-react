@@ -1,13 +1,16 @@
 import { useRef } from "react";
 import NavButton from "./NavButton";
-import { Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import captureText from "../store/actions/products";
+import { Link, useLocation } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { captureText } from "../store/actions/products";
 export default function NavBar() {
-  //LO QUE HACE ES CAPTURA EL EVENTO DEL FILTRO DE BUSQUEDA DEL PRODUCTO Y COMPARTIRLO PARA TODOS LAS RUTAS SEA HIJAS O PADRES
-  //LO PUEDE VISUALIZAR AL MOMENTO DE ESCRIBIR ALGUN COMANDO EN EL FILTRO DE BUSQUEDA
+  const location=useLocation();
+  const pathname=location.pathname;
   const text: any = useRef();
   const dispatch = useDispatch();
+  const textStore = useSelector((store:any) => store.products.text); //LA MANERA CORRECTO DE RENDERIZAR EL TEXTO CON REDUX
+  //LO QUE HACE ES CAPTURA EL EVENTO DEL FILTRO DE BUSQUEDA DEL PRODUCTO Y COMPARTIRLO PARA TODOS LAS RUTAS SEA HIJAS O PADRES
+  //LO PUEDE VISUALIZAR AL MOMENTO DE ESCRIBIR ALGUN COMANDO EN EL FILTRO DE BUSQUEDA
   const setText = () => {
     dispatch(captureText({
       text: text.current.value
@@ -32,14 +35,21 @@ export default function NavBar() {
           />
         </Link>
         <form className="w-full md:w-1/3 flex items-center flex-grow justify-center py-2 md:py-0">
-          <input
+        {/* NO APARECERA EN EL DETAIL O CUAL RUTA DEL DETAIL NO ES '/' SOLO SE VERA EN EL HOME YA QUE POSEE UN '/' */}
+        {
+          pathname==='/' && (
+            <input
             className="h-[60px] border-0 rounded-[15px] w-full p-[10px] my-0 mx-[20px] text-[14px] text-center"
             type="text"
             placeholder="Search"
             id="search"
             ref={text}
+            defaultValue={textStore}
             onChange={() => setText()}
           />
+          )
+        }
+       
         </form>
         <ul className="w-full md:w-1/3 flex items-center flex-grow justify-center pb-2
           md:justify-end md:py-0

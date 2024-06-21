@@ -15,6 +15,7 @@ export default function Home() {
         axios.get('/products.json')
             .then((resp) => {
                 const filterData = resp.data.filter((each:Products) => each.title.toLowerCase().includes(text.toLowerCase()))
+                console.log(filterData);
                 setProductos(filterData)
             })
             .catch((error) => console.log(error))

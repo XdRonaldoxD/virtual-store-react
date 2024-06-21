@@ -4,9 +4,11 @@ function Checkout({ product }:ProductProp) {
   const units:any = useRef(1)
   const [quantity, setQuantity] = useState(1);   // inicializa con 1
   const [button, setButton] = useState(false); // inicializa con false
+  const [input, setInput] = useState(false); // inicializa con false
 
   // Gestionar los datos del localStorage
   useEffect(() => {
+    
     let productsOnCart: any[] = [];
     const cart = localStorage.getItem("cart");
     if (cart) {
@@ -14,10 +16,13 @@ function Checkout({ product }:ProductProp) {
     }
     const isInCart = productsOnCart.some((each) => each.id === product.id);
     setButton(isInCart);
+    setInput(isInCart);
 
     const carritoLocal=productsOnCart.find((each)=> each.id===product.id)
     if (carritoLocal) {
       setQuantity(carritoLocal.quantity)
+    }else{
+      setQuantity(1);
     }
   }, [product]);
 
@@ -33,9 +38,12 @@ function Checkout({ product }:ProductProp) {
       product.quantity = quantity;
       productsInStorage.push(product);
       setButton(true);
+      setInput(true);
     } else {
       productsInStorage = productsInStorage.filter((each) => each.id !== product.id);
       setButton(false);
+      setInput(false);
+
     }
     localStorage.setItem("cart", JSON.stringify(productsInStorage));
   };
@@ -61,13 +69,14 @@ function Checkout({ product }:ProductProp) {
             </span>
           </li>
         </ul>
-        <div /* className="gap-y-[20px]" */>
+        <div>
           <div className="flex mb-[10px]">
             <input
               className="h-[40px] rounded-md border-0 w-[60px] mr-[10px] p-[5px] pl-[15px] box-border"
               type="number"
               min="1"
               value={quantity}
+              disabled={input}
               ref={units}
               onChange={() => setQuantity(Number(units.current.value))}
             />
@@ -80,7 +89,7 @@ function Checkout({ product }:ProductProp) {
               }
               onClick={manageCart}
             >
-              {button ? "Remove from cart" : "Add to cart"}
+              {button ? `Remover del carrito (${quantity})` : `Agregar al carrito (${quantity})`}
             </button>
           </div>
         </div>
